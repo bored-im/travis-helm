@@ -8,6 +8,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
-  RAILS_ENV: production
-  RACK_ENV: production
   API_ENDPOINT: travis-api
+  RACK_ENV: production
+  RAILS_ENV: production
+  REDIS_URL: "redis://{{ template "travis.fullname" . }}-redis:80"
