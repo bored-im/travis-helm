@@ -27,14 +27,15 @@ spec:
             - name: http
               containerPort: 4000
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+          env:
+            {{- $configMapName := include "travis.fullname" . -}}
+            {{- range .Files.Lines "dot-env-file" }}
+            - name: {{ . }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ $configMapName }}
+                  key: {{ . }}
+            {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
