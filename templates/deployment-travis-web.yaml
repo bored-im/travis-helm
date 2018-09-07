@@ -1,0 +1,52 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "travis.fullname" . }}-web
+  labels:
+    app: {{ template "travis.name" . }}
+    chart: {{ template "travis.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "travis.name" . }}-web
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "travis.name" . }}-web
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.travisWeb.image.repository }}:{{ .Values.travisWeb.image.tag }}"
+          imagePullPolicy: {{ .Values.travisWeb.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 4000
+              protocol: TCP
+          env:
+            {{- $configMapName := include "travis.fullname" . -}}
+            {{- range .Files.Lines "dot-env-file" }}
+            - name: {{ . }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ $configMapName }}
+                  key: {{ . }}
+            {{- end }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}

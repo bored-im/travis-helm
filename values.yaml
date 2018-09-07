@@ -4,10 +4,17 @@
 
 replicaCount: 1
 
-image:
-  repository: boredim/travis-web
-  tag: latest
-  pullPolicy: IfNotPresent
+travisWeb:
+  image:
+    repository: boredim/travis-web
+    tag: latest
+    pullPolicy: IfNotPresent
+
+travisApi:
+  image:
+    repository: boredim/travis-api
+    tag: latest
+    pullPolicy: IfNotPresent
 
 service:
   type: ClusterIP

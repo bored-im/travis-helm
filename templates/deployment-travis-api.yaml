@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ template "travis.fullname" . }}
+  name: {{ template "travis.fullname" . }}-api
   labels:
     app: {{ template "travis.name" . }}
     chart: {{ template "travis.chart" . }}
@@ -11,18 +11,18 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "travis.name" . }}
+      app: {{ template "travis.name" . }}-api
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "travis.name" . }}
+        app: {{ template "travis.name" . }}-api
         release: {{ .Release.Name }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.travisApi.image.repository }}:{{ .Values.travisApi.image.tag }}"
+          imagePullPolicy: {{ .Values.travisApi.image.pullPolicy }}
           ports:
             - name: http
               containerPort: 4000
