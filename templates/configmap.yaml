@@ -10,6 +10,7 @@ metadata:
 data:
   API_ENDPOINT: "https://{{ .Values.ingress.hosts.api }}"
   DATABASE_URL: "postgres://travis:travis@travis-postgresql/travis_production"
+  DISABLE_SENTRY: "true"
   PUBLIC_MODE: "true"
   RACK_ENV: production
   RAILS_ENV: production
