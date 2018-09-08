@@ -61,3 +61,9 @@ redis:
   service:
     type: ClusterIP
     port: 80
+
+# Postgresql setting
+postgresql:
+  postgresUser: travis
+  postgresPassword: travis
+  postgresDatabase: travis_production

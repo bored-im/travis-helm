@@ -8,7 +8,8 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
-  API_ENDPOINT: "http:// {{ .Values.ingress.hosts.api }}"
+  API_ENDPOINT: "https://{{ .Values.ingress.hosts.api }}"
+  DATABASE_URL: "postgres://travis:travis@travis-postgresql/travis_production"
   PUBLIC_MODE: "true"
   RACK_ENV: production
   RAILS_ENV: production
