@@ -9,10 +9,23 @@ metadata:
     heritage: {{ .Release.Service }}
 data:
   API_ENDPOINT: "https://{{ .Values.ingress.hosts.api }}"
-  DATABASE_URL: "postgres://travis:travis@travis-postgresql/travis_production"
+  DATABASE_URL: "postgres://{{ .Values.postgresql.postgresUser }}:{{ .Values.postgresql.postgresPassword }}@{{ template "travis.fullname" . }}-postgresql/{{ .Values.postgresql.postgresDatabase }}"
   DISABLE_SENTRY: "true"
   PUBLIC_MODE: "true"
   RACK_ENV: production
   RAILS_ENV: production
   REDIS_URL: "redis://{{ template "travis.fullname" . }}-redis:80"
   TRAVIS_INGRESS_HOST: {{ .Values.ingress.hosts.web }}
+  travis.yml: |
+    production:
+      oauth2:
+        authorization_server: "https://github.com"
+        authorize_path: "login/oauth/authorize"
+        access_token_path: "login/oauth/access_token"
+        client_id: {{ .Values.travisApi.github.clientId }}
+        client_secret: {{ .Values.travisApi.github.clientSecret }}
+        scope: "read:org,user:email,repo_deployment,repo:status,write:repo_hook"
+      encryption:
+        key: "49857618345426145585124502996672"
+      auth:
+        target_origin: "travisweb.ehq.host"

@@ -36,6 +36,9 @@ spec:
                   name: {{ $configMapName }}
                   key: {{ . }}
             {{- end }}
+          volumeMounts:
+          - mountPath: /config
+            name: config
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
@@ -64,3 +67,7 @@ spec:
                   key: {{ . }}
             {{- end }}
           command: ["bundle", "exec", "rake", "db:migrate"]
+      volumes:
+      - name: config
+        configMap:
+          name: {{ template "travis.fullname" . }}

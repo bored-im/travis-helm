@@ -15,6 +15,9 @@ travisApi:
     repository: boredim/travis-api
     tag: latest
     pullPolicy: Always
+  github:
+    clientId: "your-custom-github-app-client-id"
+    clientSecret: "your-custom-github-app-client-secret"
 
 travisMigrations:
   image:
