@@ -16,6 +16,12 @@ travisApi:
     tag: latest
     pullPolicy: Always
 
+travisMigrations:
+  image:
+    repository: boredim/travis-migrations
+    tag: latest
+    pullPolicy: Always
+
 service:
   type: ClusterIP
   port: 80

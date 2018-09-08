@@ -50,3 +50,17 @@ spec:
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}
+      initContainers:
+        - name: {{ .Chart.Name }}-migrations
+          image: "{{ .Values.travisMigrations.image.repository }}:{{ .Values.travisMigrations.image.tag }}"
+          imagePullPolicy: {{ .Values.travisMigrations.image.pullPolicy }}
+          env:
+            {{- $configMapName := include "travis.fullname" . -}}
+            {{- range .Files.Lines "dot-env-file" }}
+            - name: {{ . }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ $configMapName }}
+                  key: {{ . }}
+            {{- end }}
+          command: ["bundle", "exec", "rake", "db:migrate"]
