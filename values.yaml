@@ -8,13 +8,13 @@ travisWeb:
   image:
     repository: boredim/travis-web
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
 travisApi:
   image:
     repository: boredim/travis-api
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
 service:
   type: ClusterIP
@@ -50,3 +50,14 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+
+# Redis settings
+redis:
+  image:
+    repository: redis
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 80

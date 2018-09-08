@@ -26,13 +26,18 @@ spec:
   {{- end }}
 {{- end }}
   rules:
-  {{- range .Values.ingress.hosts }}
-    - host: {{ . }}
+    - host: {{ .Values.ingress.hosts.web }}
       http:
         paths:
           - path: {{ $ingressPath }}
             backend:
               serviceName: {{ $fullName }}-web
               servicePort: http
-  {{- end }}
+    - host: {{ .Values.ingress.hosts.api }}
+      http:
+        paths:
+          - path: {{ $ingressPath }}
+            backend:
+              serviceName: {{ $fullName }}-api
+              servicePort: http
 {{- end }}

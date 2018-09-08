@@ -25,7 +25,7 @@ spec:
           imagePullPolicy: {{ .Values.travisApi.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 4000
+              containerPort: 3000
               protocol: TCP
           env:
             {{- $configMapName := include "travis.fullname" . -}}
