@@ -25,6 +25,12 @@ travisBae:
     tag: latest
     pullPolicy: Always
 
+travisListener:
+  image:
+    repository: boredim/travis-listener
+    tag: latest
+    pullPolicy: Always
+
 travisMigrations:
   image:
     repository: boredim/travis-migrations
@@ -42,7 +48,9 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   path: /
   hosts:
-    - chart-example.local
+    api: travisapi.yourdomain.com
+    web: travisweb.yourdomain.com
+    listener: travislistener.yourdomain.com
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

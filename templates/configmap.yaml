@@ -30,3 +30,4 @@ data:
         key: "49857618345426145585124502996672"
       auth:
         target_origin: "travisweb.ehq.host"
+      service_hook_url: "https://{{ .Values.ingress.hosts.listener }}"
