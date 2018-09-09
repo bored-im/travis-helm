@@ -14,6 +14,7 @@ data:
   PUBLIC_MODE: "true"
   RACK_ENV: production
   RAILS_ENV: production
+  REDIS_GATEKEEPER_URL: "redis://{{ template "travis.fullname" . }}-redis:80/1"
   REDIS_URL: "redis://{{ template "travis.fullname" . }}-redis:80"
   TRAVIS_INGRESS_HOST: {{ .Values.ingress.hosts.web }}
   travis.yml: |
@@ -24,7 +25,7 @@ data:
         access_token_path: "login/oauth/access_token"
         client_id: {{ .Values.travisApi.github.clientId }}
         client_secret: {{ .Values.travisApi.github.clientSecret }}
-        scope: "read:org,user:email,repo_deployment,repo:status,write:repo_hook"
+        scope: "repo,admin:org,admin:repo_hook,admin:org_hook"
       encryption:
         key: "49857618345426145585124502996672"
       auth:
