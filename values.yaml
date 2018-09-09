@@ -19,6 +19,12 @@ travisApi:
     clientId: "your-custom-github-app-client-id"
     clientSecret: "your-custom-github-app-client-secret"
 
+travisBae:
+  image:
+    repository: boredim/travis-bae
+    tag: latest
+    pullPolicy: Always
+
 travisMigrations:
   image:
     repository: boredim/travis-migrations
