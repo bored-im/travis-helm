@@ -14,7 +14,7 @@ data:
   PUBLIC_MODE: "true"
   RACK_ENV: production
   RAILS_ENV: production
-  REDIS_GATEKEEPER_URL: "redis://{{ template "travis.fullname" . }}-redis:80/1"
+  REDIS_GATEKEEPER_URL: "redis://{{ template "travis.fullname" . }}-redis:80"
   REDIS_URL: "redis://{{ template "travis.fullname" . }}-redis:80"
   TRAVIS_INGRESS_HOST: {{ .Values.ingress.hosts.web }}
   travis.yml: |
