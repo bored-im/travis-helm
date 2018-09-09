@@ -31,3 +31,16 @@ data:
       auth:
         target_origin: "travisweb.ehq.host"
       service_hook_url: "https://{{ .Values.ingress.hosts.listener }}"
+      amqp:
+        host: "travis-rabbitmq"
+        port: 5672
+        username: "{{ .Values.rabbitmq.rabbitmq.username }}"
+        password: "{{ .Values.rabbitmq.rabbitmq.password }}"
+        vhost: "/"
+      ping:
+        interval: 10
+      lock:
+        ttl: 10
+      limit:
+        default: 5000000
+        public: 5000000
