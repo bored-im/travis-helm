@@ -97,3 +97,9 @@ postgresql:
   postgresUser: travis
   postgresPassword: travis
   postgresDatabase: travis_production
+
+# Rabbitmq settings
+rabbitmq:
+  rabbitmq:
+    username: travis
+    password: travis
