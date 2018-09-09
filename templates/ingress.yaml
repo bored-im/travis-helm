@@ -47,4 +47,11 @@ spec:
             backend:
               serviceName: {{ $fullName }}-listener
               servicePort: http
+    - host: {{ .Values.ingress.hosts.build }}
+      http:
+        paths:
+          - path: {{ $ingressPath }}
+            backend:
+              serviceName: {{ $fullName }}-build
+              servicePort: http
 {{- end }}

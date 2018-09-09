@@ -37,6 +37,11 @@ travisScheduler:
     tag: latest
     pullPolicy: Always
 
+travisBuild:
+  image:
+    repository: boredim/travis-build
+    tag: latest
+    pullPolicy: Always
 
 travisMigrations:
   image:
@@ -58,6 +63,7 @@ ingress:
     api: travisapi.yourdomain.com
     web: travisweb.yourdomain.com
     listener: travislistener.yourdomain.com
+    build: travisbuild.yourdomain.com
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

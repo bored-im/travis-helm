@@ -17,6 +17,7 @@ data:
   REDIS_GATEKEEPER_URL: "redis://{{ template "travis.fullname" . }}-redis:80"
   REDIS_URL: "redis://{{ template "travis.fullname" . }}-redis:80"
   TRAVIS_INGRESS_HOST: {{ .Values.ingress.hosts.web }}
+  TRAVIS_BUILD_API_TOKEN: "sYGHYFpysfkPBhheNYWZxVq4"
   travis.yml: |
     production:
       oauth2:
