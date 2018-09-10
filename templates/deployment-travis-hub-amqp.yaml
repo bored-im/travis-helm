@@ -1,0 +1,56 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "travis.fullname" . }}-hub-amqp
+  labels:
+    app: {{ template "travis.name" . }}
+    chart: {{ template "travis.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "travis.name" . }}-hub-amqp
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "travis.name" . }}-hub-amqp
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.travisHub.image.repository }}:{{ .Values.travisHub.image.tag }}"
+          imagePullPolicy: {{ .Values.travisHub.image.pullPolicy }}
+          command: ["bundle", "exec", "./bin/hub", "drain"]
+          env:
+            {{- $configMapName := include "travis.fullname" . -}}
+            {{- range .Files.Lines "dot-env-file" }}
+            - name: {{ . }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ $configMapName }}
+                  key: {{ . }}
+            {{- end }}
+          volumeMounts:
+          - mountPath: /config
+            name: config
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+      volumes:
+      - name: config
+        configMap:
+          name: {{ template "travis.fullname" . }}

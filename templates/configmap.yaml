@@ -17,7 +17,13 @@ data:
   REDIS_GATEKEEPER_URL: "redis://{{ template "travis.fullname" . }}-redis:80"
   REDIS_URL: "redis://{{ template "travis.fullname" . }}-redis:80"
   TRAVIS_INGRESS_HOST: {{ .Values.ingress.hosts.web }}
+  TRAVIS_SCHEDULER_REDIS_URL: "redis://{{ template "travis.fullname" . }}-redis:80/2"
   TRAVIS_BUILD_API_TOKEN: "sYGHYFpysfkPBhheNYWZxVq4"
+  TRAVIS_WORKER_AMQP_URI: "amqp://{{ .Values.rabbitmq.rabbitmq.username }}:{{ .Values.rabbitmq.rabbitmq.password }}@{{ template "travis.fullname" . }}-rabbitmq:5672"
+  TRAVIS_WORKER_QUEUE_NAME: "builds.gce"
+  TRAVIS_WORKER_BUILD_API_URI: "https://x:sYGHYFpysfkPBhheNYWZxVq4@{{ .Values.ingress.hosts.build }}/script"
+  TRAVIS_WORKER_PROVIDER_NAME: "local"
+  TRAVIS_HUB_REDIS_URL: "redis://{{ template "travis.fullname" . }}-redis:80/3"
   travis.yml: |
     production:
       oauth2:
@@ -33,7 +39,7 @@ data:
         target_origin: "travisweb.ehq.host"
       service_hook_url: "https://{{ .Values.ingress.hosts.listener }}"
       amqp:
-        host: "travis-rabbitmq"
+        host: "{{ template "travis.fullname" . }}-rabbitmq"
         port: 5672
         username: "{{ .Values.rabbitmq.rabbitmq.username }}"
         password: "{{ .Values.rabbitmq.rabbitmq.password }}"
