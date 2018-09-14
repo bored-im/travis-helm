@@ -1,0 +1,74 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "travis.fullname" . }}-logs-web
+  labels:
+    app: {{ template "travis.name" . }}
+    chart: {{ template "travis.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "travis.name" . }}-logs-web
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "travis.name" . }}-logs-web
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.travisLogs.image.repository }}:{{ .Values.travisLogs.image.tag }}"
+          imagePullPolicy: {{ .Values.travisLogs.image.pullPolicy }}
+          command: ["bundle", "exec", "./bin/travis-logs-server"]
+          ports:
+            - name: http
+              containerPort: 5555
+              protocol: TCP
+          env:
+            {{- $configMapName := include "travis.fullname" . -}}
+            {{- range .Files.Lines "dot-env-file" }}
+            - name: {{ . }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ $configMapName }}
+                  key: {{ . }}
+            {{- end }}
+          volumeMounts:
+          - mountPath: /config
+            name: config
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+      initContainers:
+        - name: {{ .Chart.Name }}-logs-migrations
+          image: "{{ .Values.travisLogs.image.repository }}:{{ .Values.travisLogs.image.tag }}"
+          imagePullPolicy: {{ .Values.travisMigrations.image.pullPolicy }}
+          env:
+            {{- $configMapName := include "travis.fullname" . -}}
+            {{- range .Files.Lines "dot-env-file" }}
+            - name: {{ . }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ $configMapName }}
+                  key: {{ . }}
+            {{- end }}
+          command: ["sqitch", "deploy", "db:pg://{{ .Values.postgresql.postgresUser }}:{{ .Values.postgresql.postgresPassword }}@{{ template "travis.fullname" . }}-postgresql/{{ .Values.postgresql.postgresDatabase }}"]
+      volumes:
+      - name: config
+        configMap:
+          name: {{ template "travis.fullname" . }}

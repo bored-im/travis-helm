@@ -43,6 +43,12 @@ travisBuild:
     tag: latest
     pullPolicy: Always
 
+travisLogs:
+  image:
+    repository: boredim/travis-logs
+    tag: latest
+    pullPolicy: Always
+
 travisWorker:
   image:
     repository: boredim/travis-worker
@@ -77,6 +83,7 @@ ingress:
     listener: travislistener.yourdomain.com
     build: travisbuild.yourdomain.com
     hub: travishub.yourdomain.com
+    logs: travislogs.yourdomain.com
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

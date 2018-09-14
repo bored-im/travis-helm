@@ -61,4 +61,11 @@ spec:
             backend:
               serviceName: {{ $fullName }}-hub
               servicePort: http
+    - host: {{ .Values.ingress.hosts.logs }}
+      http:
+        paths:
+          - path: {{ $ingressPath }}
+            backend:
+              serviceName: {{ $fullName }}-logs
+              servicePort: http
 {{- end }}
