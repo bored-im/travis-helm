@@ -130,3 +130,6 @@ rabbitmq:
   rabbitmq:
     username: travis
     password: travis
+  ingress:
+    enabled: true
+    hostName: travisamqp.yourdomain.com
