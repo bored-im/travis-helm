@@ -48,6 +48,7 @@ travisLogs:
     repository: boredim/travis-logs
     tag: latest
     pullPolicy: Always
+  authToken: "xmvCusGquyRkUXGWoUinbw2m"
 
 travisWorker:
   image:
