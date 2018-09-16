@@ -4,6 +4,12 @@
 
 replicaCount: 1
 
+dind:
+  image:
+    repository: docker
+    tag: "18.06-dind"
+    pullPolicy: Always
+
 travisWeb:
   image:
     repository: boredim/travis-web
