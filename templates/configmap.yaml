@@ -28,6 +28,9 @@ data:
   TRAVIS_WORKER_LOGS_AMQP_URI: "amqp://{{ .Values.rabbitmq.rabbitmq.username }}:{{ .Values.rabbitmq.rabbitmq.password }}@{{ template "travis.fullname" . }}-rabbitmq:5672"
   TRAVIS_WORKER_BUILD_API_URI: "https://sYGHYFpysfkPBhheNYWZxVq4:x@{{ .Values.ingress.hosts.build }}/script"
   TRAVIS_WORKER_PROVIDER_NAME: "local"
+  TRAVIS_WORKER_DOCKER_ENDPOINT: "tcp://{{ template "travis.fullname" . }}-dind:80"
+  TRAVIS_WORKER_DOCKER_IMAGE_SELECTOR_TYPE: "env"
+  TRAVIS_WORKER_DOCKER_IMAGE_DEFAULT: "travisci/ci-garnet:packer-1515445631-7dfb2e1"
   travis.yml: |
     production:
       oauth2:
