@@ -19,6 +19,7 @@ data:
   TRAVIS_INGRESS_HOST: {{ .Values.ingress.hosts.web }}
   TRAVIS_SCHEDULER_REDIS_URL: "redis://{{ template "travis.fullname" . }}-redis:80/2"
   TRAVIS_BUILD_API_TOKEN: "sYGHYFpysfkPBhheNYWZxVq4"
+  TRAVIS_BUILD_APP_HOST: "{{ .Values.ingress.hosts.build }}"
   TRAVIS_HUB_REDIS_URL: "redis://{{ template "travis.fullname" . }}-redis:80/3"
   TRAVIS_LOGS_REDIS_URL: "redis://{{ template "travis.fullname" . }}-redis:80/4"
   TRAVIS_LOGS_AUTH_TOKEN: "{{ .Values.travisLogs.authToken }}"
@@ -59,3 +60,4 @@ data:
         public: 5000000
       log_level: :debug
       api_logging: true
+      app_host: "{{ .Values.ingress.hosts.build }}"
