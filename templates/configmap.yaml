@@ -61,6 +61,10 @@ data:
       limit:
         default: 5000000
         public: 5000000
+        resets:
+          max: 1
+          after: 5
       log_level: :debug
       api_logging: true
       app_host: "{{ .Values.ingress.hosts.build }}"
+      prefer_https: true
